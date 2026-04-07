@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load filtros %}
 
 {% block content %}
 
@@ -9,24 +10,33 @@
     <!-- 💸 RESUMEN -->
     <div class="row mb-4">
 
+        <!-- SALDO -->
         <div class="col-md-4">
-            <div class="card p-3 shadow-sm">
-                <small>Saldo total</small>
-                <h3>${{ saldo|floatformat:0 }}</h3>
+            <div class="card p-3 shadow-sm border-0">
+                <small class="text-muted">Saldo</small>
+                <h3 class="fw-bold text-dark">
+                    ${{ saldo|clp }}
+                </h3>
             </div>
         </div>
 
+        <!-- INGRESOS -->
         <div class="col-md-4">
-            <div class="card p-3 shadow-sm">
-                <small>Ingresos</small>
-                <h4 class="text-success">${{ ingresos|floatformat:0 }}</h4>
+            <div class="card p-3 shadow-sm border-0">
+                <small class="text-success">Ingresos</small>
+                <h3 class="fw-bold text-success">
+                    + ${{ ingresos|clp }}
+                </h3>
             </div>
         </div>
 
+        <!-- GASTOS -->
         <div class="col-md-4">
-            <div class="card p-3 shadow-sm">
-                <small>Gastos</small>
-                <h4 class="text-danger">${{ gastos|floatformat:0 }}</h4>
+            <div class="card p-3 shadow-sm border-0">
+                <small class="text-danger">Gastos</small>
+                <h3 class="fw-bold text-danger">
+                    − ${{ gastos|clp }}
+                </h3>
             </div>
         </div>
 
@@ -40,32 +50,37 @@
 
     <!-- BOTONES -->
     <div class="mb-4">
-        <a href="/crear/" class="btn btn-success">+ Nueva Transacción</a>
-        <a href="/crear-usuario/" class="btn btn-primary">+ Nuevo Usuario</a>
+        <a href="/crear/" class="btn btn-dark btn-sm">+ Transacción</a>
+        <a href="/crear-usuario/" class="btn btn-outline-dark btn-sm">+ Usuario</a>
     </div>
 
-    <!-- 📄 LISTADO -->
+    <!-- 📄 TRANSACCIONES -->
     <div class="row">
         {% for t in transacciones %}
-        <div class="col-md-4 mb-3">
-            <div class="card shadow-sm p-3">
+        <div class="col-md-4 mb-4">
 
-                <h5>{{ t.usuario.nombre }}</h5>
-                <p class="mb-2">${{ t.monto|floatformat:0 }}</p>
+            <div class="card shadow-sm p-3 position-relative h-100">
+
+                <div class="position-absolute top-0 end-0 m-2 d-flex gap-2">
+                    <a href="/editar/{{ t.id }}/" class="text-secondary">✏️</a>
+                    <a href="/eliminar/{{ t.id }}/" class="text-danger">🗑️</a>
+                </div>
+
+                <small class="text-muted">{{ t.usuario.nombre }}</small>
+
+                <h3 class="fw-bold mt-1">
+                    ${{ t.monto|clp }}
+                </h3>
 
                 {% if t.tipo == "ingreso" %}
-                    <div class="badge bg-success w-100 mb-2">Ingreso</div>
+                    <span class="text-success small">+ Ingreso</span>
                 {% else %}
-                    <div class="badge bg-danger w-100 mb-2">Gasto</div>
+                    <span class="text-danger small">− Gasto</span>
                 {% endif %}
 
-                <a href="/editar/{{ t.id }}/" class="btn btn-outline-warning btn-sm mb-1">Editar</a>
-                <a href="/eliminar/{{ t.id }}/" class="btn btn-outline-danger btn-sm">Eliminar</a>
-
             </div>
+
         </div>
-        {% empty %}
-            <p>No hay transacciones</p>
         {% endfor %}
     </div>
 

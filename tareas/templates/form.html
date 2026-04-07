@@ -1,15 +1,47 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
 
-<h2 class="mb-4">Nueva Transacción</h2>
+<div class="container mt-4">
+    <h2>Nueva Transacción</h2>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+    <form method="post">
+        {% csrf_token %}
 
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <a href="/" class="btn btn-secondary">Volver</a>
-</form>
+        <div class="mb-3">
+            <label>Usuario</label>
+            <select name="usuario" class="form-control">
+                {% for u in usuarios %}
+                    <option value="{{ u.id }}"
+                        {% if transaccion.usuario.id == u.id %}selected{% endif %}
+                    >
+                        {{ u.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Monto</label>
+            <input type="number" name="monto" class="form-control"
+                   value="{{ transaccion.monto }}">
+        </div>
+
+        <div class="mb-3">
+            <label>Tipo</label>
+            <select name="tipo" class="form-control">
+                <option value="ingreso"
+                    {% if transaccion.tipo == "ingreso" %}selected{% endif %}
+                >Ingreso</option>
+
+                <option value="gasto"
+                    {% if transaccion.tipo == "gasto" %}selected{% endif %}
+                >Gasto</option>
+            </select>
+        </div>
+
+        <button class="btn btn-dark">Guardar</button>
+    </form>
+</div>
 
 {% endblock %}
