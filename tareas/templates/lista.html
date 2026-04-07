@@ -9,22 +9,37 @@
     <button class="btn btn-primary">Buscar</button>
 </form>
 
-<a href="/crear/" class="btn btn-success mb-4">+ Nueva Transacción</a>
+<div class="mb-3">
+    <a href="/crear/" class="btn btn-success">+ Nueva Transacción</a>
+    <a href="/crear-usuario/" class="btn btn-primary">+ Nuevo Usuario</a>
+</div>
 
-<ul class="list-group">
+<div class="row">
 {% for t in transacciones %}
-    <li class="list-group-item d-flex justify-content-between">
-        <div>
-            <strong>{{ t.usuario.nombre }}</strong><br>
-            ${{ t.monto }}
+    <div class="col-md-6 mb-4">
+
+        <div class="card shadow-sm border-0 p-4">
+
+            <h5 class="fw-bold mb-1">{{ t.usuario.nombre }}</h5>
+
+            <!-- 💰 SIN DECIMALES -->
+            <p class="text-muted mb-2">${{ t.monto|floatformat:0 }}</p>
+
+            {% if t.tipo == "ingreso" %}
+                <span class="badge rounded-pill bg-success-subtle text-success mb-3">Ingreso</span>
+            {% else %}
+                <span class="badge rounded-pill bg-danger-subtle text-danger mb-3">Gasto</span>
+            {% endif %}
+
+            <div class="d-flex gap-2">
+                <a href="/editar/{{ t.id }}" class="btn btn-outline-secondary btn-sm w-100">Editar</a>
+                <a href="/eliminar/{{ t.id }}" class="btn btn-outline-danger btn-sm w-100">Eliminar</a>
+            </div>
+
         </div>
 
-        <div>
-            <a href="/editar/{{ t.id }}" class="btn btn-warning btn-sm">Editar</a>
-            <a href="/eliminar/{{ t.id }}" class="btn btn-danger btn-sm">Eliminar</a>
-        </div>
-    </li>
+    </div>
 {% endfor %}
-</ul>
+</div>
 
 {% endblock %}
