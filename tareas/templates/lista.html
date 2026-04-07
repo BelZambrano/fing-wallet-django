@@ -2,44 +2,73 @@
 
 {% block content %}
 
-<h2 class="mb-4">Transacciones</h2>
+<div class="container mt-4">
 
-<form method="get" class="d-flex mb-4">
-    <input type="text" name="q" class="form-control me-2" placeholder="Buscar usuario" value="{{ request.GET.q }}">
-    <button class="btn btn-primary">Buscar</button>
-</form>
+    <h2 class="mb-4">💳 Fing Wallet</h2>
 
-<div class="mb-3">
-    <a href="/crear/" class="btn btn-success">+ Nueva Transacción</a>
-    <a href="/crear-usuario/" class="btn btn-primary">+ Nuevo Usuario</a>
-</div>
+    <!-- 💸 RESUMEN -->
+    <div class="row mb-4">
 
-<div class="row">
-{% for t in transacciones %}
-    <div class="col-md-6 mb-4">
-
-        <div class="card shadow-sm border-0 p-4">
-
-            <h5 class="fw-bold mb-1">{{ t.usuario.nombre }}</h5>
-
-            <!-- 💰 SIN DECIMALES -->
-            <p class="text-muted mb-2">${{ t.monto|floatformat:0 }}</p>
-
-            {% if t.tipo == "ingreso" %}
-                <span class="badge rounded-pill bg-success-subtle text-success mb-3">Ingreso</span>
-            {% else %}
-                <span class="badge rounded-pill bg-danger-subtle text-danger mb-3">Gasto</span>
-            {% endif %}
-
-            <div class="d-flex gap-2">
-                <a href="/editar/{{ t.id }}" class="btn btn-outline-secondary btn-sm w-100">Editar</a>
-                <a href="/eliminar/{{ t.id }}" class="btn btn-outline-danger btn-sm w-100">Eliminar</a>
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm">
+                <small>Saldo total</small>
+                <h3>${{ saldo|floatformat:0 }}</h3>
             </div>
+        </div>
 
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm">
+                <small>Ingresos</small>
+                <h4 class="text-success">${{ ingresos|floatformat:0 }}</h4>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm">
+                <small>Gastos</small>
+                <h4 class="text-danger">${{ gastos|floatformat:0 }}</h4>
+            </div>
         </div>
 
     </div>
-{% endfor %}
+
+    <!-- 🔍 BUSCADOR -->
+    <form method="get" class="d-flex mb-3">
+        <input type="text" name="q" class="form-control me-2" placeholder="Buscar usuario...">
+        <button class="btn btn-primary">Buscar</button>
+    </form>
+
+    <!-- BOTONES -->
+    <div class="mb-4">
+        <a href="/crear/" class="btn btn-success">+ Nueva Transacción</a>
+        <a href="/crear-usuario/" class="btn btn-primary">+ Nuevo Usuario</a>
+    </div>
+
+    <!-- 📄 LISTADO -->
+    <div class="row">
+        {% for t in transacciones %}
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm p-3">
+
+                <h5>{{ t.usuario.nombre }}</h5>
+                <p class="mb-2">${{ t.monto|floatformat:0 }}</p>
+
+                {% if t.tipo == "ingreso" %}
+                    <div class="badge bg-success w-100 mb-2">Ingreso</div>
+                {% else %}
+                    <div class="badge bg-danger w-100 mb-2">Gasto</div>
+                {% endif %}
+
+                <a href="/editar/{{ t.id }}/" class="btn btn-outline-warning btn-sm mb-1">Editar</a>
+                <a href="/eliminar/{{ t.id }}/" class="btn btn-outline-danger btn-sm">Eliminar</a>
+
+            </div>
+        </div>
+        {% empty %}
+            <p>No hay transacciones</p>
+        {% endfor %}
+    </div>
+
 </div>
 
 {% endblock %}

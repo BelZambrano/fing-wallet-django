@@ -1,17 +1,37 @@
 from django.shortcuts import render, redirect
 from .models import Transaccion
 from .forms import TransaccionForm, UsuarioForm
+from django.db.models import Sum
 
 
 def lista_transacciones(request):
     query = request.GET.get("q")
 
-    if query:
-        transacciones = Transaccion.objects.filter(usuario__nombre__icontains=query)
-    else:
-        transacciones = Transaccion.objects.all()
+    transacciones = Transaccion.objects.all().order_by("-id")
 
-    return render(request, "lista.html", {"transacciones": transacciones})
+    if query:
+        transacciones = transacciones.filter(usuario__nombre__icontains=query)
+
+    ingresos = (
+        Transaccion.objects.filter(tipo="ingreso").aggregate(Sum("monto"))["monto__sum"]
+        or 0
+    )
+    gastos = (
+        Transaccion.objects.filter(tipo="gasto").aggregate(Sum("monto"))["monto__sum"]
+        or 0
+    )
+    saldo = ingresos - gastos
+
+    return render(
+        request,
+        "lista.html",
+        {
+            "transacciones": transacciones,
+            "ingresos": ingresos,
+            "gastos": gastos,
+            "saldo": saldo,
+        },
+    )
 
 
 def crear_transaccion(request):
