@@ -1,48 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Fing Wallet</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+{% extends 'base.html' %}
 
-<div class="container mt-5">
+{% block content %}
 
-    <h1 class="mb-4 text-center">Fing Wallet 💸</h1>
+<h2 class="mb-4">Transacciones</h2>
 
-    <!-- BUSCADOR -->
-    <form method="get" class="d-flex mb-3">
-        <input type="text" name="q" class="form-control me-2" placeholder="Buscar usuario" value="{{ request.GET.q }}">
-        <button type="submit" class="btn btn-outline-primary">Buscar</button>
-    </form>
+<form method="get" class="d-flex mb-4">
+    <input type="text" name="q" class="form-control me-2" placeholder="Buscar usuario" value="{{ request.GET.q }}">
+    <button class="btn btn-primary">Buscar</button>
+</form>
 
-    <!-- BOTÓN CREAR -->
-    <div class="d-flex justify-content-between mb-3">
-        <a href="/crear/" class="btn btn-primary">+ Nueva Transacción</a>
-    </div>
+<a href="/crear/" class="btn btn-success mb-4">+ Nueva Transacción</a>
 
-    <!-- LISTA -->
-    <ul class="list-group">
-    {% if transacciones %}
-        {% for t in transacciones %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <strong>{{ t.usuario.nombre }}</strong><br>
-                    ${{ t.monto }} - {{ t.tipo }}
-                </div>
+<ul class="list-group">
+{% for t in transacciones %}
+    <li class="list-group-item d-flex justify-content-between">
+        <div>
+            <strong>{{ t.usuario.nombre }}</strong><br>
+            ${{ t.monto }}
+        </div>
 
-                <div>
-                    <a href="/editar/{{ t.id }}" class="btn btn-sm btn-warning">Editar</a>
-                    <a href="/eliminar/{{ t.id }}" class="btn btn-sm btn-danger">Eliminar</a>
-                </div>
-            </li>
-        {% endfor %}
-    {% else %}
-        <li class="list-group-item text-center">No hay resultados</li>
-    {% endif %}
-    </ul>
+        <div>
+            <a href="/editar/{{ t.id }}" class="btn btn-warning btn-sm">Editar</a>
+            <a href="/eliminar/{{ t.id }}" class="btn btn-danger btn-sm">Eliminar</a>
+        </div>
+    </li>
+{% endfor %}
+</ul>
 
-</div>
-
-</body>
-</html>
+{% endblock %}
