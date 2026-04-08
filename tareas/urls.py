@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import (
+    inicio,
     lista_transacciones,
     crear_transaccion,
     editar_transaccion,
@@ -9,7 +10,8 @@ from .views import (
 )
 
 urlpatterns = [
-    path("", lista_transacciones, name="lista"),
+    path("", inicio, name="inicio"),
+    path("dashboard/", lista_transacciones, name="dashboard"),
     path("crear/", crear_transaccion, name="crear"),
     path("editar/<int:id>/", editar_transaccion, name="editar"),
     path("eliminar/<int:id>/", eliminar_transaccion, name="eliminar"),

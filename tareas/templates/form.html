@@ -3,51 +3,52 @@
 {% block content %}
 
 <div class="container mt-4">
-    <h2>Registrar Movimiento</h2>
+    <h2 class="mb-4">Registrar Movimiento</h2>
 
-    <form method="post">
-        {% csrf_token %}
+    <div class="card p-4 shadow-sm border-0" style="max-width: 550px;">
+        <form method="post">
+            {% csrf_token %}
 
-        <div class="mb-3">
-            <label>Contacto</label>
-            <select name="contacto" class="form-control">
-                {% for c in contactos %}
-                    <option value="{{ c.id }}"
-                        {% if transaccion.usuario.id == c.id %}selected{% endif %}
-                    >
-                        {{ c.nombre }}
+            <div class="mb-3">
+                <label class="form-label">Contacto</label>
+                <select name="contacto" class="form-control">
+                    {% for c in contactos %}
+                        <option value="{{ c.id }}"
+                            {% if transaccion.usuario.id == c.id %}selected{% endif %}
+                        >
+                            {{ c.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Monto</label>
+                <input type="number" name="monto" class="form-control"
+                       value="{{ transaccion.monto }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tipo de movimiento</label>
+                <select name="tipo" class="form-control">
+                    <option value="ingreso"
+                        {% if transaccion.tipo == "ingreso" %}selected{% endif %}>
+                        Depósito
                     </option>
-                {% endfor %}
-            </select>
-        </div>
 
-        <div class="mb-3">
-            <label>Monto</label>
-            <input type="number" name="monto" class="form-control"
-                   value="{{ transaccion.monto }}">
-        </div>
+                    <option value="gasto"
+                        {% if transaccion.tipo == "gasto" %}selected{% endif %}>
+                        Envío
+                    </option>
+                </select>
+            </div>
 
-        <div class="mb-3">
-            <label>Tipo de movimiento</label>
-            <select name="tipo" class="form-control">
-
-                <option value="ingreso"
-                    {% if transaccion.tipo == "ingreso" %}selected{% endif %}
-                >
-                    Depósito
-                </option>
-
-                <option value="gasto"
-                    {% if transaccion.tipo == "gasto" %}selected{% endif %}
-                >
-                    Envío
-                </option>
-
-            </select>
-        </div>
-
-        <button class="btn btn-dark">Guardar</button>
-    </form>
+            <div class="d-flex gap-2">
+                <button class="btn btn-dark">Guardar</button>
+                <a href="/dashboard/" class="btn btn-outline-secondary">Volver</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 {% endblock %}

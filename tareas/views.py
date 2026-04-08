@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Transaccion, Usuario
 
 
+def inicio(request):
+    return render(request, "inicio.html")
+
+
 def lista_transacciones(request):
     query = request.GET.get("q")
 
@@ -38,7 +42,7 @@ def crear_transaccion(request):
 
         Transaccion.objects.create(usuario=contacto, monto=monto, tipo=tipo)
 
-        return redirect("lista")
+        return redirect("dashboard")
 
     return render(request, "form.html", {"contactos": contactos})
 
@@ -59,7 +63,7 @@ def editar_transaccion(request, id):
         transaccion.tipo = tipo
         transaccion.save()
 
-        return redirect("lista")
+        return redirect("dashboard")
 
     return render(
         request, "form.html", {"transaccion": transaccion, "contactos": contactos}
@@ -69,14 +73,14 @@ def editar_transaccion(request, id):
 def eliminar_transaccion(request, id):
     transaccion = get_object_or_404(Transaccion, id=id)
     transaccion.delete()
-    return redirect("lista")
+    return redirect("dashboard")
 
 
 def crear_contacto(request):
     if request.method == "POST":
         nombre = request.POST.get("nombre")
         Usuario.objects.create(nombre=nombre)
-        return redirect("lista")
+        return redirect("dashboard")
 
     return render(request, "crear_contacto.html")
 

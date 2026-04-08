@@ -38,8 +38,9 @@
 
     </div>
 
-    <div class="mb-4">
-        <a href="/" class="btn btn-outline-dark btn-sm">← Volver</a>
+    <div class="mb-4 d-flex gap-2 flex-wrap">
+        <a href="/" class="btn btn-outline-secondary btn-sm">Inicio</a>
+        <a href="/dashboard/" class="btn btn-outline-dark btn-sm">Volver al dashboard</a>
     </div>
 
     <div class="row">
@@ -62,7 +63,7 @@
 
         </div>
         {% empty %}
-            <p>No hay movimientos para este contacto.</p>
+        <p class="text-muted">No hay movimientos para este contacto.</p>
         {% endfor %}
     </div>
 

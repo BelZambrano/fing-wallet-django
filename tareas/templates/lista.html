@@ -5,7 +5,7 @@
 
 <div class="container mt-4">
 
-    <h2 class="mb-4">💳 Fing Wallet</h2>
+    <h2 class="mb-4">📊 Dashboard Fing Wallet</h2>
 
     <div class="row mb-4">
 
@@ -43,9 +43,10 @@
         <button class="btn btn-primary">Buscar</button>
     </form>
 
-    <div class="mb-4">
+    <div class="mb-4 d-flex gap-2 flex-wrap">
         <a href="/crear/" class="btn btn-dark btn-sm">+ Transacción</a>
         <a href="/crear-contacto/" class="btn btn-outline-dark btn-sm">+ Contacto</a>
+        <a href="/" class="btn btn-outline-secondary btn-sm">Volver al inicio</a>
     </div>
 
     <div class="row">
@@ -55,8 +56,8 @@
             <div class="card shadow-sm p-3 position-relative h-100">
 
                 <div class="position-absolute top-0 end-0 m-2 d-flex gap-2">
-                    <a href="/editar/{{ t.id }}/" class="text-secondary">✏️</a>
-                    <a href="/eliminar/{{ t.id }}/" class="text-danger">🗑️</a>
+                    <a href="/editar/{{ t.id }}/" class="text-secondary text-decoration-none">✏️</a>
+                    <a href="/eliminar/{{ t.id }}/" class="text-danger text-decoration-none">🗑️</a>
                 </div>
 
                 <small class="text-muted">
@@ -78,6 +79,8 @@
             </div>
 
         </div>
+        {% empty %}
+        <p class="text-muted">No hay movimientos registrados.</p>
         {% endfor %}
     </div>
 

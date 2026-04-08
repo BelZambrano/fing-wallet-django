@@ -5,7 +5,7 @@
 <div class="container mt-4">
     <h2 class="mb-4">👤 Nuevo Contacto</h2>
 
-    <div class="card p-4 shadow-sm" style="max-width: 420px;">
+    <div class="card p-4 shadow-sm border-0" style="max-width: 420px;">
         <form method="post">
             {% csrf_token %}
 
@@ -14,7 +14,10 @@
                 <input type="text" name="nombre" class="form-control" required>
             </div>
 
-            <button type="submit" class="btn btn-dark w-100">Crear Contacto</button>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-dark">Crear Contacto</button>
+                <a href="/" class="btn btn-outline-secondary">Volver al inicio</a>
+            </div>
         </form>
     </div>
 </div>
