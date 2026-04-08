@@ -8,11 +8,34 @@ def inicio(request):
 
 def lista_transacciones(request):
     query = request.GET.get("q")
+    tipo = request.GET.get("tipo")
+    monto_min = request.GET.get("monto_min")
+    orden = request.GET.get("orden")
 
     transacciones = Transaccion.objects.all()
 
+    # Buscar por nombre de contacto
     if query:
         transacciones = transacciones.filter(usuario__nombre__icontains=query)
+
+    # Filtrar por tipo de movimiento
+    if tipo:
+        transacciones = transacciones.filter(tipo=tipo)
+
+    # Filtrar por monto mínimo
+    if monto_min:
+        try:
+            transacciones = transacciones.filter(monto__gte=monto_min)
+        except ValueError:
+            pass
+
+    # Ordenar por monto
+    if orden == "monto_asc":
+        transacciones = transacciones.order_by("monto")
+    elif orden == "monto_desc":
+        transacciones = transacciones.order_by("-monto")
+    else:
+        transacciones = transacciones.order_by("-id")
 
     ingresos = sum(t.monto for t in transacciones if t.tipo == "ingreso")
     gastos = sum(t.monto for t in transacciones if t.tipo == "gasto")
@@ -87,7 +110,7 @@ def crear_contacto(request):
 
 def detalle_contacto(request, id):
     contacto = get_object_or_404(Usuario, id=id)
-    transacciones = Transaccion.objects.filter(usuario=contacto)
+    transacciones = Transaccion.objects.filter(usuario=contacto).order_by("-id")
 
     ingresos = sum(t.monto for t in transacciones if t.tipo == "ingreso")
     gastos = sum(t.monto for t in transacciones if t.tipo == "gasto")

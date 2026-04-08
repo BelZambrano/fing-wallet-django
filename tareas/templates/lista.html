@@ -7,6 +7,7 @@
 
     <h2 class="mb-4">📊 Dashboard Fing Wallet</h2>
 
+    <!-- RESUMEN -->
     <div class="row mb-4">
 
         <div class="col-md-4">
@@ -38,17 +39,67 @@
 
     </div>
 
-    <form method="get" class="d-flex mb-3">
-        <input type="text" name="q" class="form-control me-2" placeholder="Buscar contacto...">
-        <button class="btn btn-primary">Buscar</button>
+    <!-- FILTROS -->
+    <form method="get" class="row g-2 mb-4">
+
+        <div class="col-md-3">
+            <input
+                type="text"
+                name="q"
+                class="form-control"
+                placeholder="Buscar contacto..."
+                value="{{ request.GET.q }}"
+            >
+        </div>
+
+        <div class="col-md-2">
+            <select name="tipo" class="form-control">
+                <option value="">Todos</option>
+                <option value="ingreso" {% if request.GET.tipo == "ingreso" %}selected{% endif %}>
+                    Depósitos
+                </option>
+                <option value="gasto" {% if request.GET.tipo == "gasto" %}selected{% endif %}>
+                    Envíos
+                </option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <input
+                type="number"
+                name="monto_min"
+                class="form-control"
+                placeholder="Monto mínimo"
+                value="{{ request.GET.monto_min }}"
+            >
+        </div>
+
+        <div class="col-md-3">
+            <select name="orden" class="form-control">
+                <option value="">Ordenar</option>
+                <option value="monto_asc" {% if request.GET.orden == "monto_asc" %}selected{% endif %}>
+                    Monto: menor a mayor
+                </option>
+                <option value="monto_desc" {% if request.GET.orden == "monto_desc" %}selected{% endif %}>
+                    Monto: mayor a menor
+                </option>
+            </select>
+        </div>
+
+        <div class="col-md-2 d-grid">
+            <button class="btn btn-primary">Filtrar</button>
+        </div>
+
     </form>
 
+    <!-- BOTONES -->
     <div class="mb-4 d-flex gap-2 flex-wrap">
         <a href="/crear/" class="btn btn-dark btn-sm">+ Transacción</a>
         <a href="/crear-contacto/" class="btn btn-outline-dark btn-sm">+ Contacto</a>
         <a href="/" class="btn btn-outline-secondary btn-sm">Volver al inicio</a>
     </div>
 
+    <!-- TRANSACCIONES -->
     <div class="row">
         {% for t in transacciones %}
         <div class="col-md-4 mb-4">
