@@ -98,11 +98,15 @@ Esto evita inconsistencias y asegura que el saldo siempre refleje el estado real
 
 ## 🔍 Filtro de búsqueda
 
-Se implementa una búsqueda por nombre de contacto utilizando:
+Se implementó un sistema de filtros combinables que permite:
 
-- `.filter()`
+- Buscar por nombre de contacto
+- Filtrar por tipo de transacción (depósito / envío)
+- Filtrar por monto mínimo
 
-Esto permite visualizar dinámicamente los movimientos relacionados.
+Esto se implementa mediante parámetros GET y consultas dinámicas usando el ORM de Django.
+
+También se implementa ordenamiento dinámico por monto (ascendente y descendente) utilizando `.order_by()`.
 
 ---
 
@@ -248,23 +252,134 @@ Además, implicó resolver errores reales, fortaleciendo la comprensión del fra
 
 ## ▶️ Ejecución del proyecto
 
-```bash
 python manage.py runserver
 
-Abrir en:
+Abrir en: http://127.0.0.1:8000/
 
-http://127.0.0.1:8000/
-
-
-
+---
 
 ## 🛠️ Tecnologías utilizadas
 
-| Tecnología | Descripción |
-|----------|------------|
-| 🐍 Python | Lenguaje principal del proyecto |
-| 🌐 Django | Framework web utilizado |
-| 🗄️ SQLite | Base de datos relacional |
-| 🎨 HTML5 | Estructura de las vistas |
-| 🎯 Bootstrap 5 | Estilos y diseño responsivo |
-| ⚙️ Django ORM | Manejo de base de datos |
+Tecnología	Descripción
+🐍 Python	Lenguaje principal del proyecto
+🌐 Django	Framework web utilizado
+🗄️ SQLite	Base de datos relacional
+🎨 HTML5	Estructura de las vistas
+🎯 Bootstrap 5	Estilos y diseño responsivo
+⚙️ Django ORM	Manejo de base de datos
+
+
+## 📝 Respuestas a preguntas de evaluación
+
+## 🧩 Sobre los modelos
+
+¿Qué modelos definiste y por qué elegiste esos?
+Se definieron dos modelos principales:
+
+Contacto: representa a una persona asociada a movimientos financieros.
+Transacción: representa un movimiento de dinero.
+
+Esta estructura fue elegida porque permite modelar de forma simple una billetera digital, donde una persona usuaria del sistema registra movimientos asociados a distintos contactos.
+
+¿Qué tipo de relación usaste entre tus modelos y por qué?
+Se utilizó una relación ForeignKey desde Transaccion hacia Contacto, porque un contacto puede tener muchas transacciones y cada transacción pertenece a un solo contacto.
+
+¿Qué valor le pusiste a on_delete y por qué?
+Se utilizó on_delete=models.CASCADE, de modo que si se elimina un contacto, también se eliminan sus transacciones asociadas. Esto evita registros huérfanos.
+
+## ⚙️ Sobre el ORM
+
+¿Qué métodos del ORM usaste para cada operación CRUD?
+
+Create: .create()
+Read: .all(), .filter(), .get()
+Update: .save()
+Delete: .delete()
+
+¿Qué método usaste en la vista de filtro/búsqueda para construir la consulta?
+Se utilizó .filter() con parámetros GET para buscar por nombre de contacto, filtrar por tipo de transacción y por monto mínimo.
+
+¿Cuál es la diferencia entre .get() y .filter()?
+.get() retorna un solo objeto y lanza error si no existe o hay más de uno.
+.filter() retorna un conjunto de resultados y no lanza error si no encuentra coincidencias.
+
+## 🗃️ Sobre las migraciones
+
+¿Qué pasaría si modificas un modelo pero no generas una nueva migración?
+La base de datos no se actualizaría, generando una inconsistencia entre el código y la estructura real de las tablas. Eso puede provocar errores en ejecución.
+
+¿Dónde se almacenan los archivos de migración y para qué sirven?
+Se almacenan en:
+
+'' tareas/migrations/ ''
+
+Sirven para registrar cambios en los modelos y aplicarlos a la base de datos de forma controlada.
+
+## 🧱 Sobre la arquitectura
+
+¿Por qué es importante que la lógica de base de datos esté en las vistas y no en los templates?
+Porque los templates deben encargarse solo de la presentación. La lógica de negocio y acceso a datos debe estar en las vistas para mantener una separación clara de responsabilidades.
+
+¿Cuál es el flujo completo de una solicitud en Django?
+
+La persona usuaria accede a una URL
+Django revisa urls.py
+Se ejecuta la vista correspondiente
+La vista interactúa con el ORM
+Se obtiene o modifica información en la base de datos
+Se envía un contexto al template
+El template renderiza la información
+El navegador muestra el resultado
+📸 Evidencia sugerida
+Servidor en ejecución
+Menú de inicio
+Dashboard
+Creación de contacto
+Registro de movimiento
+Edición de transacción
+Búsqueda de contacto
+Detalle por contacto
+
+
+
+## 📸 Capturas
+
+### 🏠 Inicio
+
+![Inicio](screenshots/inicio.png)
+
+---
+
+### 📊 Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+---
+
+### 👤 Crear contacto
+
+![Crear contacto](screenshots/crear_contacto.png)
+
+---
+
+### 💸 Registrar movimiento
+
+![Movimiento](screenshots/crear_movimiento.png)
+
+---
+
+### 🔍 Filtros aplicados (nombre y tipo transacción)
+
+![Filtro nombre](screenshots/filtro_nombre.png)
+
+![Filtro tipo](screenshots/filtro_tipo_ordenado.png)
+
+---
+
+## 👩‍💻 Autor
+
+**Belén Zambrano**
+
+Desarrolladora Web Trainee 🚀
+
+*Proyecto desarrollado como parte del bootcamp Full Stack Python.*
