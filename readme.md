@@ -260,13 +260,15 @@ Abrir en: http://127.0.0.1:8000/
 
 ## 🛠️ Tecnologías utilizadas
 
-Tecnología	Descripción
-🐍 Python	Lenguaje principal del proyecto
-🌐 Django	Framework web utilizado
-🗄️ SQLite	Base de datos relacional
-🎨 HTML5	Estructura de las vistas
-🎯 Bootstrap 5	Estilos y diseño responsivo
-⚙️ Django ORM	Manejo de base de datos
+
+| Tecnología | Descripción |
+|-----------|------------|
+| 🐍 Python | Lenguaje principal del proyecto |
+| 🌐 Django | Framework web utilizado |
+| 🗄️ SQLite | Base de datos relacional |
+| 🎨 HTML5 | Estructura de las vistas |
+| 🎯 Bootstrap 5 | Estilos y diseño responsivo |
+| ⚙️ Django ORM | Manejo de base de datos |
 
 
 ## 📝 Respuestas a preguntas de evaluación
