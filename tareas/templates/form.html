@@ -3,19 +3,19 @@
 {% block content %}
 
 <div class="container mt-4">
-    <h2>Nueva Transacción</h2>
+    <h2>Registrar Movimiento</h2>
 
     <form method="post">
         {% csrf_token %}
 
         <div class="mb-3">
-            <label>Usuario</label>
-            <select name="usuario" class="form-control">
-                {% for u in usuarios %}
-                    <option value="{{ u.id }}"
-                        {% if transaccion.usuario.id == u.id %}selected{% endif %}
+            <label>Contacto</label>
+            <select name="contacto" class="form-control">
+                {% for c in contactos %}
+                    <option value="{{ c.id }}"
+                        {% if transaccion.usuario.id == c.id %}selected{% endif %}
                     >
-                        {{ u.nombre }}
+                        {{ c.nombre }}
                     </option>
                 {% endfor %}
             </select>
@@ -28,15 +28,21 @@
         </div>
 
         <div class="mb-3">
-            <label>Tipo</label>
+            <label>Tipo de movimiento</label>
             <select name="tipo" class="form-control">
+
                 <option value="ingreso"
                     {% if transaccion.tipo == "ingreso" %}selected{% endif %}
-                >Ingreso</option>
+                >
+                    Depósito
+                </option>
 
                 <option value="gasto"
                     {% if transaccion.tipo == "gasto" %}selected{% endif %}
-                >Gasto</option>
+                >
+                    Envío
+                </option>
+
             </select>
         </div>
 

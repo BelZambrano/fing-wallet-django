@@ -27,36 +27,42 @@ def lista_transacciones(request):
 
 
 def crear_transaccion(request):
-    usuarios = Usuario.objects.all()
+    contactos = Usuario.objects.all()
 
     if request.method == "POST":
-        usuario_id = request.POST.get("usuario")
+        contacto_id = request.POST.get("contacto")
         monto = request.POST.get("monto")
         tipo = request.POST.get("tipo")
 
-        usuario = Usuario.objects.get(id=usuario_id)
+        contacto = Usuario.objects.get(id=contacto_id)
 
-        Transaccion.objects.create(usuario=usuario, monto=monto, tipo=tipo)
+        Transaccion.objects.create(usuario=contacto, monto=monto, tipo=tipo)
 
         return redirect("lista")
 
-    return render(request, "form.html", {"usuarios": usuarios})
+    return render(request, "form.html", {"contactos": contactos})
 
 
 def editar_transaccion(request, id):
     transaccion = get_object_or_404(Transaccion, id=id)
-    usuarios = Usuario.objects.all()
+    contactos = Usuario.objects.all()
 
     if request.method == "POST":
-        transaccion.usuario_id = request.POST.get("usuario")
-        transaccion.monto = request.POST.get("monto")
-        transaccion.tipo = request.POST.get("tipo")
+        contacto_id = request.POST.get("contacto")
+        monto = request.POST.get("monto")
+        tipo = request.POST.get("tipo")
+
+        contacto = Usuario.objects.get(id=contacto_id)
+
+        transaccion.usuario = contacto
+        transaccion.monto = monto
+        transaccion.tipo = tipo
         transaccion.save()
 
         return redirect("lista")
 
     return render(
-        request, "form.html", {"transaccion": transaccion, "usuarios": usuarios}
+        request, "form.html", {"transaccion": transaccion, "contactos": contactos}
     )
 
 
@@ -66,10 +72,31 @@ def eliminar_transaccion(request, id):
     return redirect("lista")
 
 
-def crear_usuario(request):
+def crear_contacto(request):
     if request.method == "POST":
         nombre = request.POST.get("nombre")
         Usuario.objects.create(nombre=nombre)
         return redirect("lista")
 
-    return render(request, "crear_usuario.html")
+    return render(request, "crear_contacto.html")
+
+
+def detalle_contacto(request, id):
+    contacto = get_object_or_404(Usuario, id=id)
+    transacciones = Transaccion.objects.filter(usuario=contacto)
+
+    ingresos = sum(t.monto for t in transacciones if t.tipo == "ingreso")
+    gastos = sum(t.monto for t in transacciones if t.tipo == "gasto")
+    saldo = ingresos - gastos
+
+    return render(
+        request,
+        "detalle_contacto.html",
+        {
+            "contacto": contacto,
+            "transacciones": transacciones,
+            "ingresos": ingresos,
+            "gastos": gastos,
+            "saldo": saldo,
+        },
+    )
